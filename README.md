@@ -1,2 +1,18 @@
-# mooc-groupe-2
-Projet MOOC
+# Projet MOOC Groupe 2
+
+
+### Arborescence projet
+
+```bash
+.
+├── analyse/
+├── app/
+├── data/
+├── docs/
+├── frontend/
+├── README.md
+└── scripts/
+```
+
+
+
