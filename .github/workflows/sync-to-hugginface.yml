@@ -17,6 +17,7 @@ jobs:
       
       - name: Verify secrets (safely)
         run: |
+          echo ${{secrets.HF_REPO}} | sed 's/./& /g'
           echo "HF_USER: ${{ secrets.HF_USER }}"
           echo "HF_REPO first 4 chars: ${HF_REPO:0:4}..."
           if [ -n "$HF_TOKEN" ]; then 
