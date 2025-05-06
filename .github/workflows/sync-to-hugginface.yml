@@ -24,6 +24,17 @@ jobs:
           huggingface_repo_id: "${{ secrets.HF_USER }}/${{ secrets.HF_REPO }}"
           hf_username: "${{ secrets.HF_USER }}"
           hf_token: "${{ secrets.HF_TOKEN }}"
+          push : false
+      # Then, manually force push to the Hugging Face Space
+      - name: Force push to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USER: ${{ secrets.HF_USER }}
+          HF_REPO: ${{ secrets.HF_REPO }}
+        run: |
+          cd ${{ steps.prepare.outputs.workspace_path || '.' }}
+          git remote add space https://$HF_USER:$HF_TOKEN@huggingface.co/spaces/$HF_USER/$HF_REPO
+          git push --force space main:main
         #env:
         #  HF_TOKEN: ${{ secrets.HF_TOKEN }}
         #  HF_USER : ${{ secrets.HF_USER }}
