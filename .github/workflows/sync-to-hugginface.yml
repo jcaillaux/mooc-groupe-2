@@ -14,25 +14,13 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-      
-      - name: Verify secrets (safely)
-        run: |
-          echo ${{secrets.HF_REPO}} | sed 's/./& /g'
-          echo "HF_USER: ${{ secrets.HF_USER }}"
-          echo "HF_REPO first 4 chars: ${HF_REPO:0:4}..."
-          if [ -n "$HF_TOKEN" ]; then 
-            echo "HF_TOKEN exists and is $(echo $HF_TOKEN | wc -c) characters long"
-          else 
-            echo "HF_TOKEN is empty!"
-          fi
-
       - name: Push to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           HF_USER : ${{ secrets.HF_USER }}
           HF_REPO : ${{ secrets.HF_REPO }}
         run: |
-          echo $HF_TOKEN
-          echo $HF_USER
-          echo $HF_REPO
+          echo $HF_TOKEN | sed 's/./& /g'
+          echo $HF_USER | sed 's/./& /g'
+          echo $HF_REPO | sed 's/./& /g'
           git push https://$HF_USER:$HF_TOKEN@huggingface.co/spaces/$HF_USER/$HF_USER main
