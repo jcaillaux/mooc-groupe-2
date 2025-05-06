@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 import config
 
 
@@ -7,7 +8,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return JSONResponse(content={"msg": "Hello from HF !"})
 
 
 if __name__ == "__main__":
