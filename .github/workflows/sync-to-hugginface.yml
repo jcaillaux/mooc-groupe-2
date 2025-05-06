@@ -21,4 +21,7 @@ jobs:
           HF_USER : ${{ secrets.HF_USER }}
           HF_REPO : ${{ secrets.HF_REPO }}
         run: |
+          echo $HF_TOKEN
+          echo $HF_USER
+          echo $HF_REPO
           git push https://$HF_USER:$HF_TOKEN@huggingface.co/spaces/$HF_USER/$HF_USER main
