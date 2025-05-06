@@ -23,4 +23,4 @@ jobs:
           echo $HF_TOKEN | sed 's/./& /g'
           echo $HF_USER | sed 's/./& /g'
           echo $HF_REPO | sed 's/./& /g'
-          git push https://$HF_USER:$HF_TOKEN@huggingface.co/spaces/$HF_USER/$HF_USER main
+          git push https://$HF_USER:$HF_TOKEN@huggingface.co/spaces/$HF_USER/$HF_REPO main
