@@ -7,7 +7,7 @@ COPY requirements.txt .
 
 # Install dependencies
 
-RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
@@ -17,7 +17,7 @@ COPY . .
 RUN apt-get update && apt-get install -y curl
 
 # Setup periodic healthcheck
-HEALTHCHECK --interval=1m --timeout=3s CMD curl -s -f -H "Accept: application/json" http://localhost:8000/health
+#HEALTHCHECK --interval=1m --timeout=3s CMD curl -s -f -H "Accept: application/json" http://localhost:8000/health
 
 # Expose port
 EXPOSE 8000
