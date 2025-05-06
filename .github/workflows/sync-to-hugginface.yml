@@ -17,7 +17,8 @@ jobs:
 
       - name: Push to Hugging Face Space
         uses: alex-bene/huggingface-space-sync-action@v0.1
-        github_repo_id: "${{ github.repository }}"
+        with:
+          github_repo_id: "${{ github.repository }}"
           github_branch: "main"
           yaml_header_path: "space.yml"  
           huggingface_repo_id: "${{ secrets.HF_USER }}/${{ secrets.HF_REPO }}"
