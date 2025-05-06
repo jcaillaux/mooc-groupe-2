@@ -34,11 +34,13 @@ class MongoMessages:
 
         if print_:
             for message in result:
+                print("")
                 print(message)
+                print("_______________________________________________________________________________________")
 
         return result
 
 
-project = ['content.title', 'content.body', 'content.votes']
-mongo = MongoMessages()
-messages = mongo.get_messages_data(project_=project)
+# project = ['content.title', 'content.body', 'content.votes']
+# mongo = MongoMessages()
+# messages = mongo.get_messages_data(project_=project)
