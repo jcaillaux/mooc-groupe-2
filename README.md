@@ -1,12 +1,3 @@
----
-title: Project MOOC Groupe 2
-emoji: 🚀
-colorFrom: blue
-colorTo: green
-sdk: docker
-app_port: 7860
----
-
 # Projet MOOC Groupe 2
 
 ## Prérequis 
