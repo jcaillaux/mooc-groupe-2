@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y curl
 #HEALTHCHECK --interval=1m --timeout=3s CMD curl -s -f -H "Accept: application/json" http://localhost:8000/health
 
 # Expose port
-EXPOSE 8000
+EXPOSE 7860
 
 # Start application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
