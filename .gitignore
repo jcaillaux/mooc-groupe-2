@@ -3,7 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-app/templates/
 # C extensions
 *.so
 data/*.json
