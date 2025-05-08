@@ -14,27 +14,85 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
+name: Sync to Hugging Face Space
 
-      - name: Push to Hugging Face Space
-        uses: alex-bene/huggingface-space-sync-action@v0.1
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          github_repo_id: "${{ github.repository }}"
-          github_branch: "main"
-          yaml_header_path: "space.yml"  
-          huggingface_repo_id: "${{ secrets.HF_USER }}/${{ secrets.HF_REPO }}"
-          hf_username: "${{ secrets.HF_USER }}"
-          hf_token: "${{ secrets.HF_TOKEN }}"
-          push : true
+          fetch-depth: 0
+          lfs: true
+      
+      - name: Create and push to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USER: ${{ secrets.HF_USER }}
+          HF_REPO: ${{ secrets.HF_REPO }}
+        run: |
+          # Configure git
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+          
+          # 1. Create a new branch from main
+          git checkout -b temp-hf-sync
+          
+          # 2. Create the README with HF metadata
+          echo "Creating Hugging Face README with metadata"
+          echo "---" > HF_README.md
+          cat space.yml >> HF_README.md
+          echo "---" >> HF_README.md
+          cat README.md >> HF_README.md
+          
+          # Replace the README with the HF version
+          mv HF_README.md README.md
+          
+          # 3. Commit changes on the temporary branch
+          git add README.md
+          git commit -m "Update README for Hugging Face"
+          
+          # Add Hugging Face remote and force push
+          git remote add space "https://$HF_USER:$HF_TOKEN@huggingface.co/spaces/$HF_USER/$HF_REPO"
+          echo "Force pushing to Hugging Face Space..."
+          
+          # 3. Force push the branch to HF
+          git push --force space temp-hf-sync:main
+          
+          echo "Push completed"
+          
+          # 4. Delete the temporary branch
+          git checkout -f main
+          git branch -D temp-hf-sync
+          echo "Temporary branch deleted"
+          
+      #- name: Push to Hugging Face Space
+        #  uses: alex-bene/huggingface-space-sync-action@v0.1
+        #with:
+        #  github_repo_id: "${{ github.repository }}"
+        #  github_branch: "main"
+        #  yaml_header_path: "space.yml"  
+        #  huggingface_repo_id: "${{ secrets.HF_USER }}/${{ secrets.HF_REPO }}"
+        #  hf_username: "${{ secrets.HF_USER }}"
+        #  hf_token: "${{ secrets.HF_TOKEN }}"
+        #  push : false
       # Then, manually force push to the Hugging Face Space
       #- name: Force push to Hugging Face Space
         #  env:
-          #  HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          # HF_USER: ${{ secrets.HF_USER }}
-          #HF_REPO: ${{ secrets.HF_REPO }}
+        #  HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        #  HF_USER: ${{ secrets.HF_USER }}
+        #  HF_REPO: ${{ secrets.HF_REPO }}
         #run: |
-        #  cd ${{ steps.prepare.outputs.workspace_path || '.' }}
-        #  git remote add space https://$HF_USER:$HF_TOKEN@huggingface.co/spaces/$HF_USER/$HF_REPO
-        #  git push --force space main:main
+#  cd ${{ steps.prepare.outputs.workspace_path || '.' }}
+#         git remote add space https://$HF_USER:$HF_TOKEN@huggingface.co/spaces/$HF_USER/$HF_REPO
+#          git push --force space main:main
         #env:
         #  HF_TOKEN: ${{ secrets.HF_TOKEN }}
         #  HF_USER : ${{ secrets.HF_USER }}
