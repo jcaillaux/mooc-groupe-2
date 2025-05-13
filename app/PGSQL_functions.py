@@ -1,4 +1,4 @@
-from dotenv import load_dotenv  # pip install dotenv
+from config import SCHEMA, DATABASE_URL, VECTOR_DIMENSION
 import os
 from typing import Optional, List, Any
 from sqlmodel import Field, Session, SQLModel, create_engine, text, select # pip install sqlmodel
@@ -8,10 +8,6 @@ from sqlalchemy.orm import mapped_column
 from pydantic import BaseModel, ConfigDict, ValidationError
 
 
-# Charger les variables d'environnement
-load_dotenv("../.env", override=True)
-DATABASE_URL = os.getenv("url")
-SCHEMA = os.getenv("SCHEMA")
 engine = create_engine(DATABASE_URL)
 
 
@@ -21,12 +17,12 @@ class message(SQLModel, table=True):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    id: int = Field(default=None, primary_key=True)
+    id: str = Field(default=None, primary_key=True)
     body: Optional[str] = Field(default=None)
     created_at: Optional[str] = Field(default=None)
     parent_id: Optional[str] = Field(default=None)
     thread_id: Optional[str] = Field(default=None)
-    body_embedding : Any = Field(sa_type=Vector(1024))
+    body_embedding : Optional[Any] = Field(sa_type=Vector(VECTOR_DIMENSION))
 
 # Pour activer l'extension pgvector si nécessaire
 def setup_pgvector():
@@ -49,10 +45,13 @@ def add_message(msg):
     with Session(engine) as session:
         # Vérifier si le message existe déjà en utilisant l'ID
         sql_request = select(message).where(message.id == msg.id)
+        print(sql_request)
         existing_message = session.exec(sql_request).first()
+        print(existing_message)
         
         if existing_message:
             # Si le message existe déjà, retourner son ID
+            print(f"Message with ID {msg.id} already exists.")
             return existing_message.id
         else:
             # Si le message n'existe pas, l'ajouter et retourner son nouvel ID
@@ -61,6 +60,11 @@ def add_message(msg):
             # Rafraîchir l'objet pour obtenir l'ID généré
             session.refresh(msg)
             return msg.id
+
+
+
+        
+
 
 def read_message(message_id: Optional[int] = None):
     with Session(engine) as session:
@@ -81,5 +85,7 @@ def main():
    print(SCHEMA)
 
 if __name__ == "__main__":
+    # A executer une seule fois pour créer la base de données et les tables
+    # $ python -m app.PGSQL_functions
     main()
 
