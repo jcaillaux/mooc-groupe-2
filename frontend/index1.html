@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trouver les fils les plus pertinents</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body *{  
+            border-color: #c9ccce!important;
+        } 
+        /* Barre de navigation */
+        header{
+            background-color: #101214;
+            color:white;
+            padding: 3px 30px;
+        }
+        main{
+            padding: 50px;
+        }
+        header h1{
+            font-size: 25px;
+            font-weight: 700;
+        }
+        /* Input pour poser une question */
+        .question-form{
+            max-width: 500px;
+        }
+        .question-form div{
+            display: flex;
+            gap: 10px;
+        }
+        /* Réponses */
+        .reponses h5{
+            color: rgb(21, 31, 101)!important;
+            font-weight: 600;
+        }
+        .reponses p{
+            color: rgb(31, 31, 31)!important;
+            font-size: 12px;
+        }
+        input{
+            
+        }
+    </style>
+</head>
+<body>
+    <!-- Barre de navigation -->
+    <header>
+        <h1>Mooc</h1>
+    </header>
+    <main>
+        <!-- Input pour poser une question -->
+        <div class="mb-3 question-form">
+            <label for="exampleFormControlTextarea1" class="form-label">Posez votre question :</label>
+            <div>
+                <input type="text"  class="form-control" id="exampleFormControlInput1" placeholder="">
+                <button type="button" class="btn btn-dark">Valider</button>
+            </div>
+        </div>
+        <!-- Résultats : fils de discutions -->
+        
+
+        <div class="list-group reponses">
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Semaine_6 / A-Retiere-Lehideux</h5>
+                <small>Réponses : 4</small>
+                </div>
+                <p class="mb-1">ID cours : CNAM/01002/Trimestre_1_2014</p>
+                
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Fil de discutions 2</h5>
+                <small class="text-body-secondary">Réponses :</small>
+                </div>
+                <p class="mb-1">ID cours :</p>
+                
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Fil de discutions 3</h5>
+                <small class="text-body-secondary">Réponses :</small>
+                </div>
+                <p class="mb-1">ID cours :</p>
+                
+            </a>
+        </div>
+
+
+    </main>
+</body>
+</html>
