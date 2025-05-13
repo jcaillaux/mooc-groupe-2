@@ -12,8 +12,10 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
+@app.get("/scrapping_mooc_messages")
+
 # route pour réccupérer les messages mooc de la base de données et créér un fichier jsonl
-@app.get("/mooc_messages_from_db")
+@app.get("/mooc_messages_to_jsonl")
 def get_mooc_messages_from_db():
     messages = Pipeline()
     messages_data = messages.db_messages_pipeline()
