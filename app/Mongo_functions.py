@@ -1,3 +1,9 @@
+### Mongo_functions.py ###
+"""
+Module de gestion de l'accès à la base de données MongoDB.
+Utilise pymongo.
+"""
+
 from config import MONGO_URL
 from pymongo import MongoClient # pip install pymongo
 

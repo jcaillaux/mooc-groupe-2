@@ -1,13 +1,18 @@
+### PGSQL_functions.py ###
+"""
+Module de gestion de l'accès à la base de données PostgreSQL.
+Utilise SQLModel et pgvector pour la gestion des messages et des embeddings.
+"""
+
 from config import SCHEMA, DATABASE_URL, VECTOR_DIMENSION
-import os
-from typing import Optional, List, Any
+from typing import Optional, Any
 from sqlmodel import Field, Session, SQLModel, create_engine, text, select # pip install sqlmodel
-from sqlalchemy import Column
 from pgvector.sqlalchemy import Vector
 from sqlalchemy.orm import mapped_column
 from pydantic import BaseModel, ConfigDict, ValidationError
 
 
+# Création du moteur de base de données
 engine = create_engine(DATABASE_URL)
 
 
@@ -22,6 +27,7 @@ class message(SQLModel, table=True):
     created_at: Optional[str] = Field(default=None)
     parent_id: Optional[str] = Field(default=None)
     thread_id: Optional[str] = Field(default=None)
+    courseware_title: Optional[str] = Field(default=None)
     body_embedding : Optional[Any] = Field(sa_type=Vector(VECTOR_DIMENSION))
 
 # Pour activer l'extension pgvector si nécessaire
@@ -30,6 +36,7 @@ def setup_pgvector():
         conn.execute(text("CREATE EXTENSION IF NOT EXISTS VECTOR;"))
         conn.commit()
 
+
 def create_db_and_tables():
     # Créer le schéma s'il n'existe pas
     with Session(engine) as session:
@@ -37,6 +44,8 @@ def create_db_and_tables():
         session.commit()
     # Créer l'extension pgvector si nécessaire
     setup_pgvector()
+    # On efface les tables existantes avant de créer les nouvelles
+    SQLModel.metadata.drop_all(engine)
     # Créer les tables s'il n'existent pas
     SQLModel.metadata.create_all(engine)
 
@@ -45,9 +54,9 @@ def add_message(msg):
     with Session(engine) as session:
         # Vérifier si le message existe déjà en utilisant l'ID
         sql_request = select(message).where(message.id == msg.id)
-        print(sql_request)
+        #print(sql_request)
         existing_message = session.exec(sql_request).first()
-        print(existing_message)
+        #print(existing_message)
         
         if existing_message:
             # Si le message existe déjà, retourner son ID

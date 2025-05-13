@@ -1,3 +1,9 @@
+### Mongo2PG.py ###
+"""
+Cript de transfert des messages de MongoDB vers PostgreSQL.
+Utilise les modules Mongo_functions et PGSQL_functions.
+"""
+
 import sys
 import os
 import time
@@ -32,46 +38,39 @@ model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniL
 def main(): 
 
     all_msg = read_msg()
+    nb_msg_total = len(all_msg)
+    cpt_total = 0
+    cpt_saved = 0
+    time_begin = time.time()
 
     for msg in all_msg:
         # On cree une instance de la classe message
         mymessage = message()
-
-        #On ne veut pas enregoistrer les messages dont le body est inexistant
+        cpt_total += 1
+                
+        #On ne veut pas enregistrer les messages dont le body est inexistant
         mymessage.body = msg.get('body', None)
         if mymessage.body is not None:
             mymessage.id = msg.get('id')
+            mymessage.created_at = msg.get('created_at', None)
             mymessage.parent_id = msg.get('parent_id', None)
             mymessage.thread_id = msg.get('thread_id', None)
-            #mymessage.body_embedding = client.models.embed_content(
-            #    model=model,
-            #    contents=mymessage.body
-            #).embeddings[0].values
-            
-            #mymessage.body_embedding = client.embeddings.create(
-            #    model=model,
-            #    inputs=["Embed this sentence.", "As well as this one."],
-            #)
+         
 
             mymessage.body_embedding = model.encode(mymessage.body)
             mymessage.body_embedding = mymessage.body_embedding.tolist()
             
-            print(len(mymessage.body_embedding))
-            #add_message(mymessage)
-            #time.sleep(1)
-            input()
-            
-            
-        #
-
-        #read_message(mymessage.id)
+            add_message(mymessage)
+            cpt_saved += 1
         
+        os.system('clear') 
+        print(f"Message {cpt_total}/{nb_msg_total} traité")
+        print(f"{cpt_saved} messages  enregistrés dans la base de données")   
+        print(f"Pourcentage d'avancement : {round(cpt_total/nb_msg_total*100, 2)}%")
+        time_delta = time.time() - time_begin
+        print(f"Temps écoulé : {round(time_delta, 2)} secondes")
+        #input()
             
-        # Add message to PostgreSQL
-        #add_message(mymessage)
-        
-
-    
 
 
 if __name__ == "__main__":

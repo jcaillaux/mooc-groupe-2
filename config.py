@@ -27,7 +27,7 @@ MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
 
 
-VECTOR_DIMENSION = 3072
+VECTOR_DIMENSION = 384
 
 # FastAPI configuration
 HOST = "localhost"
