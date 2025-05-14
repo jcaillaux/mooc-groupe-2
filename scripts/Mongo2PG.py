@@ -1,6 +1,6 @@
 ### Mongo2PG.py ###
 """
-Cript de transfert des messages de MongoDB vers PostgreSQL.
+Script de transfert des messages de MongoDB vers PostgreSQL.
 Utilise les modules Mongo_functions et PGSQL_functions.
 """
 
@@ -15,11 +15,11 @@ sys.path.append(parent_dir)
 
 # Import functions
 from app.Mongo_functions import read_msg, read_msg_by_id
-from app.PGSQL_functions import message, add_message, read_message
 from config import GEMINI_API_KEY, MISTRAL_API_KEY
 from google import genai # pip install google-genai
 from mistralai import Mistral
 from sentence_transformers import SentenceTransformer
+from app.postgreDB import Message, add_message
 
 #client = genai.Client(api_key=GEMINI_API_KEY)
 #model="gemini-embedding-exp-03-07"
@@ -33,7 +33,6 @@ from sentence_transformers import SentenceTransformer
 
 # Modele sentence-transformers
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
-#embeddings = model.encode(sentences)
 
 def main(): 
 
@@ -45,7 +44,7 @@ def main():
 
     for msg in all_msg:
         # On cree une instance de la classe message
-        mymessage = message()
+        mymessage = Message()
         cpt_total += 1
                 
         #On ne veut pas enregistrer les messages dont le body est inexistant
@@ -57,7 +56,7 @@ def main():
             mymessage.thread_id = msg.get('thread_id', None)
          
 
-            mymessage.body_embedding = model.encode(mymessage.body)
+            mymessage.body_embedding = model.encode(mymessage.body, show_progress_bar=False)
             mymessage.body_embedding = mymessage.body_embedding.tolist()
             
             add_message(mymessage)
@@ -66,7 +65,7 @@ def main():
         os.system('clear') 
         print(f"Message {cpt_total}/{nb_msg_total} traité")
         print(f"{cpt_saved} messages  enregistrés dans la base de données")   
-        print(f"Pourcentage d'avancement : {round(cpt_total/nb_msg_total*100, 2)}%")
+        print(f"\rPourcentage d'avancement : {round(cpt_total/nb_msg_total*100, 2)}%", end="", flush=True)
         time_delta = time.time() - time_begin
         print(f"Temps écoulé : {round(time_delta, 2)} secondes")
         #input()
