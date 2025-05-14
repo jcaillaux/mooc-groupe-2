@@ -18,6 +18,9 @@ SCHEMA = os.getenv("SCHEMA")
 
 #MongoDB configuration Cyril
 MONGO_URL = os.getenv("urlmongoDB")
+MONGO_DB_NAME = "mooc"
+MONGO_COLLECTION_ORIGINAL = "forum_original"
+MONGO_COLLECTION_CLEANED = "documents"
 
 # Google Gemini API configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
