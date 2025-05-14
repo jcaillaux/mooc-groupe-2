@@ -35,6 +35,7 @@ COPY --from=frontend-build /app/frontend/dist /app/app/templates
 
 # Copy application code
 COPY ./app /app/app
+COPY ./data /app/data
 COPY config.py /app/
 
 # Expose the port for Hugging Face
