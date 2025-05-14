@@ -4,17 +4,14 @@ Module de gestion de l'accès à la base de données MongoDB.
 Utilise pymongo.
 """
 
-from config import MONGO_URL
+from config import MONGO_URL, MONGO_DB_NAME, MONGO_COLLECTION_CLEANED
 from pymongo import MongoClient # pip install pymongo
 
 
-db_name = 'mooc'
-collection_name = 'documents'
-
 print(MONGO_URL)
 client = MongoClient(MONGO_URL)
-db = client[db_name]
-collection = db[collection_name]
+db = client[MONGO_DB_NAME]
+collection = db[MONGO_COLLECTION_CLEANED]
 
 
 def read_msg():
