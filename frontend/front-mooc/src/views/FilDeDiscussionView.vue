@@ -2,13 +2,13 @@
   <div id="app">
     <h1>Comments</h1>
     <div class="comments">
-      <Comment v-for="comment in comments" :key="comment.id" v-bind="comment" />
+      <Comment v-for="(comment, index) in comments" :key="index" v-bind="comment.content" />
     </div>
   </div>
 </template>
 
 <script>
-import commentsData from '../data/comments.js';
+import commentsData from '../data/mooc.sample.json';
 
 import Comment from '../components/comment.vue';
 
@@ -20,7 +20,7 @@ export default {
   computed: {
     comments() {
       return [...commentsData];
-    }, 
+    },
   },
 };
 </script>
