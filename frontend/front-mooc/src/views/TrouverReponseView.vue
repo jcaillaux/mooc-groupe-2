@@ -32,7 +32,7 @@
     </main>
 </template>
 
-<script scoped>
+<script >
 
 import BarreDeNavigation from "../components/BarreDeNavigation.vue";
 import ResultatsFils from "../components/ResultatsFils.vue";

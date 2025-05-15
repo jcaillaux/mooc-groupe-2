@@ -7,7 +7,7 @@
       :key="index"
     >
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ thread.thread_title }}</h5>
+        <router-link :to="`/fil-de-discussion/${thread.thread_id}`"><h5 class="mb-1">{{ thread.thread_title }}</h5></router-link>
         <!-- <small>Réponses : 4</small> -->
       </div>
     </a>

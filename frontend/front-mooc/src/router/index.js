@@ -10,7 +10,7 @@ const routes = [
     component: TrouverReponse
   },
   {
-    path: '/fil-de-discussion',
+    path: '/fil-de-discussion/:id',
     name: 'fil-de-discussion',
     component: FilDeDiscussion
   }

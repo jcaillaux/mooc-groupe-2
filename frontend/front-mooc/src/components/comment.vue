@@ -34,7 +34,7 @@ export default {
 
 <style lang="css" scoped>
 .comment {
-  border: 1px solid DodgerBlue;
+  border: 1px solid rgb(188, 188, 188);
   border-radius: 0.5rem;
   margin-bottom: 1rem;
   padding: 1.5rem;
