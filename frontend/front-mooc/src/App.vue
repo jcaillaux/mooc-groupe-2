@@ -1,15 +1,12 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
 
-    <div >
-      <h1> Project Mooc Group 2</h1>
-    </div>
-
-  <RouterView />
+    <router-view /> <!-- Affichage de la page selon la route -->
 </template>
 
+<script>
+
+</script>
+
 <style scoped>
+
 </style>
