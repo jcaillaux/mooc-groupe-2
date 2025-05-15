@@ -34,7 +34,9 @@
 <script scoped>
 import BarreDeNavigation from "../components/BarreDeNavigation.vue";
 import ResultatsFils from "../components/ResultatsFils.vue";
-import courses from "../data/courses.json";
+
+import axios from "axios";
+// import courses from "../data/courses.json";
 import threads from "../data/threads.json";
 
 export default {
@@ -44,15 +46,32 @@ export default {
     },
     data() {
         return {
-            courses,
-            threads,
-            selectedCourse: courses.length > 0 ? courses[0].course_id : null
+            courses: [],
+            threads: {},
+            selectedCourse: null,
         };
+    },
+    methods: {
+        getCourses(){
+            axios.get("http://127.0.0.1:5000/api/courses")
+            .then( response =>{
+                this.courses = response.data;
+                this.selectedCourse = this.courses[0].course_id || this.courses[0].id;
+                alert(this.selectedCourse);
+                
+            })
+        }
+    },
+    mounted() {
+        this.getCourses();
+        this.threads = threads;
+        
     },
     computed: {
         filteredThreads() {
             return this.threads[this.selectedCourse] || [];
         }
+        
     }
 };
 </script>
