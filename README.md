@@ -22,7 +22,7 @@ source .venv/bin/activate
 docker buildx build -t mooc:latest .
 
 # Exécution du conteneur
-docker run -p 8000:8000 mooc:latest
+docker run -p 7860:7860 mooc:latest
 ```
 
 L'application sera accessible à partir d'un navigateur web.  

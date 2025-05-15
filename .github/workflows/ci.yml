@@ -16,4 +16,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run basic test
-        run: echo "Running tests" && exit 0
+        run: |
+          echo "Running tests" && exit 0
+          pip install -r requirements.txt
+          pip install pytest
+          
+          pytest
+

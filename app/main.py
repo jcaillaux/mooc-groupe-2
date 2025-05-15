@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 import config
+from .api.points import list_courses, list_threads, dump_thread
 
 # Create FastAPI app
 app = FastAPI(
@@ -28,6 +29,21 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/courses", tags=["ACCESS DATA"])
+async def course(request: Request):
+    return JSONResponse(content=list_courses())
+
+
+@app.get("/courses/{course_id}", tags=["ACCESS DATA"])
+async def threads(resquest: Request, course_id: str):
+    return JSONResponse(content=list_threads(course_id=course_id))
+
+
+@app.get("/courses/{course_id}/threads/{thread_id}", tags=["ACCESS DATA"])
+async def messages(request: Request, course_id: str, thread_id: str):
+    return JSONResponse(content=dump_thread(thread_id=thread_id))
 
 
 @app.get("/", tags=["FRONT"])
