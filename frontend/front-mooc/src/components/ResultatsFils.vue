@@ -6,8 +6,8 @@
       v-for="(thread, index) in threads"
       :key="index"
     >
-      <div class="d-flex w-100 justify-content-between">
-        <router-link :to="`/fil-de-discussion/${thread.thread_id}`"><h5 class="mb-1">{{ thread.thread_title }}</h5></router-link>
+      <div class="d-flex w-100 justify-content-between thread">
+        <router-link :to="`/fil-de-discussion/${thread.thread_id}`" target="_blank"><h5 class="mb-1">{{ thread.thread_title }}</h5></router-link>
         <!-- <small>Réponses : 4</small> -->
       </div>
     </a>
@@ -27,10 +27,21 @@ export default {
         .reponses h5{
             color: rgb(21, 31, 101)!important;
             font-weight: 600;
+            font-size: 16px;
         }
         .reponses p{
             color: rgb(31, 31, 31)!important;
             font-size: 12px;
+        }
+        .thread{
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: rgb(255, 255, 255);
+            margin-bottom: 3px;
+            text-decoration: none;
+        }
+        .thread * {
+            text-decoration: none;
         }
         
 </style>
