@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import json
+from flask import request
 
 app = Flask(__name__)
 CORS(app)
@@ -56,6 +57,20 @@ def api_list_threads(course_id):
 @app.route('/api/thread/<thread_id>', methods=['GET'])
 def api_get_thread(thread_id):
     return jsonify(list_messages(thread_id))
+
+
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    json_data = request.get_json()
+    username = json_data.get('username')
+    password = json_data.get('password')
+
+    if username == 'admin' and password == 'admin':
+        return jsonify({'status': 'success', 'message': 'Login successful'})
+    else:
+        return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 401
+    
+
 
 
 if __name__ == '__main__':

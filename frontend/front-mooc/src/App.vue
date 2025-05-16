@@ -8,5 +8,8 @@
 </script>
 
 <style scoped>
+body {
+    font-family: 'Poppins'!important;
+}
 
 </style>

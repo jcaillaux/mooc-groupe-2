@@ -27,14 +27,15 @@
         <button type="button" class="btn btn-dark valider" :onclick=ValiderQuestion >Valider</button>
         <!-- Liste des résultats -->
         <section v-if="question" class="section-resultats">
-            <div class="discussion-header alert alert-info p-4 rounded-1 shadow-sm mb-4">
-                <h3>
-                    Fils de discussions recommandées : 
+            <div class="">
+                <h4 class="fw-bold">
+                    Fils de discussions recommandés : <br>
+                    <span class="discussion-question">"{{ question }}"</span>
                     
-                </h3>
-                <p class="discussion-question">
-                <span>"{{ question }}"</span>
-                </p>
+                </h4>
+                
+                
+                
             </div>
             <ResultatsFils :threads="filteredThreads" />
         </section>
