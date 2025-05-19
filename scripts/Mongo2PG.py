@@ -15,7 +15,7 @@ sys.path.append(parent_dir)
 
 # Import functions
 from app.Mongo_functions import read_msg, read_msg_by_id
-from config import GEMINI_API_KEY, MISTRAL_API_KEY
+from config import MONGO_COLLECTION_CLEANED
 from google import genai # pip install google-genai
 from mistralai import Mistral
 from sentence_transformers import SentenceTransformer
@@ -33,11 +33,12 @@ from app.postgreDB import Message, add_message
 
 # Modele sentence-transformers
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
-
+print ("Modèle chargé : ", model)
 def main(): 
 
-    all_msg = read_msg()
+    all_msg = read_msg(MONGO_COLLECTION_CLEANED)
     nb_msg_total = len(all_msg)
+    print(f"Nombre total de messages : {nb_msg_total}")
     cpt_total = 0
     cpt_saved = 0
     time_begin = time.time()
