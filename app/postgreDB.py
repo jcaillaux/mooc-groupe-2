@@ -12,6 +12,8 @@ from pydantic import ConfigDict
 
 from config import SCHEMA, DATABASE_URL, VECTOR_DIMENSION
 
+
+
 # Configuration du logger
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO,
@@ -51,7 +53,7 @@ def setup_pgvector():
 def create_schema():
     """Crée le schéma s'il n'existe pas."""
     with Session(engine) as session:
-        session.execute(text(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA}"))
+        session.exec(text(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA}"))
         session.commit()
         logger.info(f"Schéma {SCHEMA} vérifié/créé")
 

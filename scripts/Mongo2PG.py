@@ -4,9 +4,6 @@ Script de transfert des messages de MongoDB vers PostgreSQL.
 Utilise les modules Mongo_functions et PGSQL_functions.
 """
 
-from app.postgreDB import Message, add_message
-from sentence_transformers import SentenceTransformer
-from app.Mongo_functions import read_msg, read_msg_by_id
 import sys
 import os
 import time
@@ -17,29 +14,25 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
 # Import functions
-# from config import GEMINI_API_KEY, MISTRAL_API_KEY
-# from google import genai # pip install google-genai
-# from mistralai import Mistral
 
-# client = genai.Client(api_key=GEMINI_API_KEY)
-# model="gemini-embedding-exp-03-07"
+from app.Mongo_functions import read_msg, read_msg_by_id
+from config import MONGO_COLLECTION_CLEANED
+from google import genai # pip install google-genai
+from mistralai import Mistral
+from sentence_transformers import SentenceTransformer
+from app.postgreDB import Message, add_message
 
-# client = Mistral(api_key=MISTRAL_API_KEY)
-# model = "mistral-embed"
-# embeddings_batch_response = client.embeddings.create(
-#    model=model,
-#    inputs=["Embed this sentence.", "As well as this one."],
-# )
 
-# Modele sentence-transformers
 model = SentenceTransformer(
     'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
-
+print ("Modèle chargé : ", model)
 
 def main():
 
-    all_msg = read_msg()
+
+    all_msg = read_msg(MONGO_COLLECTION_CLEANED)
     nb_msg_total = len(all_msg)
+    print(f"Nombre total de messages : {nb_msg_total}")
     cpt_total = 0
     cpt_saved = 0
     time_begin = time.time()
