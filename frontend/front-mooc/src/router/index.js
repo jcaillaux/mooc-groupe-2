@@ -31,8 +31,18 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const store = useCounterStore()
-  if (to.meta.requiresAuth && !store.connected) next('/landing-page') // redirige si pas connecté
-  else next()
+  // Si l'utilisateur n'est pas connecté et qu'il va vers une page protégée
+  if (to.meta.requiresAuth && !store.connected) {
+    next('/landing-page')
+  }
+  // Si l'utilisateur est connecté et qu'il essaie d'aller sur la landing page
+  else if (to.path === '/landing-page' && store.connected) {
+    next('/')
+  }
+  else {
+    next()
+  }
 })
+
 
 export default router
