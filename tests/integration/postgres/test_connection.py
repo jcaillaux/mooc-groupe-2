@@ -6,4 +6,4 @@ from config import DATABASE_URL
 def test_database_connection(db_session):
     assert db_session is not None
     result = db_session.execute(text("SELECT 1")).scalar()
-    assert result == 1
+    assert result == 2
