@@ -16,7 +16,7 @@ from config import SCHEMA, DATABASE_URL, VECTOR_DIMENSION
 
 # Configuration du logger
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, 
+logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # Création de l'engine de base de données
@@ -25,12 +25,12 @@ engine = create_engine(DATABASE_URL, echo=False)
 
 class Message(SQLModel, table=True):
     """Modèle représentant un message dans la base de données."""
-    
+
     __table_args__ = {"schema": SCHEMA}
     __tablename__ = "message"
-    
+
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    
+
     id: str = Field(default=None, primary_key=True)
     body: Optional[str] = Field(default=None)
     created_at: Optional[str] = Field(default=None)
@@ -61,14 +61,14 @@ def create_schema():
 def create_tables(drop_existing=False):
     """
     Crée les tables dans la base de données.
-    
+
     Args:
         drop_existing: Si True, supprime les tables existantes avant de les recréer
     """
     if drop_existing:
         logger.warning("Suppression des tables existantes")
         SQLModel.metadata.drop_all(engine)
-    
+
     logger.info("Création des tables")
     SQLModel.metadata.create_all(engine)
 
@@ -76,7 +76,7 @@ def create_tables(drop_existing=False):
 def initialize_database(drop_existing=False):
     """
     Initialise complètement la base de données.
-    
+
     Args:
         drop_existing: Si True, supprime les tables existantes avant de les recréer
     """
@@ -92,10 +92,10 @@ def initialize_database(drop_existing=False):
 def add_message(message):
     """
     Ajoute un message à la base de données.
-    
+
     Args:
         message: L'objet Message à ajouter
-        
+
     Returns:
         str: L'ID du message ajouté
     """
@@ -104,11 +104,11 @@ def add_message(message):
         existing_message = session.exec(
             select(Message).where(Message.id == message.id)
         ).first()
-        
+
         if existing_message:
             logger.info(f"Message with ID {message.id} already exists.")
             return existing_message.id
-        
+
         # Ajout du nouveau message
         session.add(message)
         session.commit()
@@ -120,10 +120,10 @@ def add_message(message):
 def get_message_by_id(message_id):
     """
     Récupère un message par son ID.
-    
+
     Args:
         message_id: L'ID du message à récupérer
-        
+
     Returns:
         Optional[Message]: Le message trouvé ou None
     """
@@ -136,7 +136,7 @@ def get_message_by_id(message_id):
 def get_all_messages():
     """
     Récupère tous les messages.
-    
+
     Returns:
         List[Message]: Liste de tous les messages
     """
@@ -147,10 +147,10 @@ def get_all_messages():
 def update_message(message):
     """
     Met à jour un message existant.
-    
+
     Args:
         message: L'objet Message avec les modifications
-        
+
     Returns:
         bool: True si la mise à jour a réussi, False sinon
     """
@@ -158,15 +158,18 @@ def update_message(message):
         existing_message = session.exec(
             select(Message).where(Message.id == message.id)
         ).first()
-        
+
         if not existing_message:
-            logger.warning(f"Message with ID {message.id} not found for update.")
+            logger.warning(f"Message with ID {
+                           message.id} not found for update.")
             return False
-        
+
         # Mise à jour des attributs
-        for key, value in message.model_dump(exclude_unset=True).items(): # model_dump convertit en dict, exclude_unset=True pour ignorer les valeurs par défaut
-            setattr(existing_message, key, value)   # setattr permet de mettre à jour les attributs dynamiquement
-        
+        # model_dump convertit en dict, exclude_unset=True pour ignorer les valeurs par défaut
+        for key, value in message.model_dump(exclude_unset=True).items():
+            # setattr permet de mettre à jour les attributs dynamiquement
+            setattr(existing_message, key, value)
+
         session.add(existing_message)
         session.commit()
         logger.info(f"Message with ID {message.id} updated successfully.")
@@ -176,10 +179,10 @@ def update_message(message):
 def delete_message(message_id):
     """
     Supprime un message par son ID.
-    
+
     Args:
         message_id: L'ID du message à supprimer
-        
+
     Returns:
         bool: True si la suppression a réussi, False sinon
     """
@@ -187,11 +190,12 @@ def delete_message(message_id):
         message = session.exec(
             select(Message).where(Message.id == message_id)
         ).first()
-        
+
         if not message:
-            logger.warning(f"Message with ID {message_id} not found for deletion.")
+            logger.warning(f"Message with ID {
+                           message_id} not found for deletion.")
             return False
-        
+
         session.delete(message)
         session.commit()
         logger.info(f"Message with ID {message_id} deleted successfully.")

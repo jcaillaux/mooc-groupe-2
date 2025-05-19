@@ -16,4 +16,15 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run basic test
-        run: echo "Running tests" && exit 0
+        env: 
+          URL : ${{ secrets.AZ_POSTGRES }}
+        run: |
+          echo "Building the .env file"
+          echo "url=$URL" >> .env
+
+          echo "Running tests" 
+          pip install -r requirements.txt
+          pip install pytest
+          
+          pytest
+

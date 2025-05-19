@@ -1,5 +1,10 @@
 python-dotenv
 fastapi
 uvicorn
+
 pymongo
+
+sqlmodel
+psycopg2-binary
+pgvector
 
