@@ -26,6 +26,9 @@ MONGO_COLLECTION_CLEANED = "extracted_content"
 # Pgvector
 VECTOR_DIMENSION = 384
 
+# Paramètres service RAG
+NB_MESSAGES_PROPOSES = 5
+
 # FastAPI configuration
 HOST = "localhost"
 PORT = 8000
