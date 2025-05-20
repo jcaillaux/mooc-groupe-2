@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import TrouverReponse from '../views/TrouverReponseView.vue' // Importation de la vue Home
 import FilDeDiscussion from '../views/FilDeDiscussionView.vue'
 import LandingPageView from '../views/LandingPageView.vue'
+import ThredsClustsViews from '../views/ThredsClustsViews.vue'
 import { useCounterStore } from '../stores/data.js' // Importation du store Pinia
 
 const routes = [
@@ -15,6 +16,12 @@ const routes = [
     path: '/fil-de-discussion/:id',
     name: 'fil-de-discussion',
     component: FilDeDiscussion,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/threds-clusts',
+    name: 'threds-clusts',
+    component: ThredsClustsViews,
     meta: { requiresAuth: true }
   },
   {

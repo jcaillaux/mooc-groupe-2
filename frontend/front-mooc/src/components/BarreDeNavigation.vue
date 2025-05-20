@@ -6,7 +6,7 @@
             <nav>
                 <ul>
                         <li><router-link to="/">Accueil</router-link></li>
-                        <li><router-link to="/">Topics</router-link></li>
+                        <li><router-link to="/threds-clusts">Topics</router-link></li>
                         <li><router-link to="/">Users</router-link></li>
                     </ul>
                 <div class="deconnexion" >
