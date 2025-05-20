@@ -7,4 +7,4 @@ pymongo
 sqlmodel
 psycopg2-binary
 pgvector
-
+sqlalchemy
