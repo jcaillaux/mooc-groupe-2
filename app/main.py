@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -9,8 +9,13 @@ from typing import Annotated
 
 
 class LoginData(BaseModel):
-    username: str
-    password: str
+    username: str = Field(max_length=16)
+    password: str = Field(max_length=16)
+
+
+class RagData(BaseModel):
+    course_id: str = Field(max_length=128)
+    prompt:    str = Field(max_length=512)
 
 
 # Create FastAPI app
@@ -56,11 +61,7 @@ async def messages(request: Request, course_id: str, thread_id: str):
 
 
 @app.post("/api/login", tags=["LOGIN"])
-# , username: str = Form(), password: str = Form()):
-async def login(request: Request, form=LoginData):
-    print(form)
-    print(f"Username: {form.username}")
-    print(f"Password: {form.password}")
+async def login(request: Request, form: LoginData):
     return JSONResponse(content={'status': 'success', 'message': 'Login Sucessful'})
 
 
@@ -72,6 +73,14 @@ async def logout(request: Request):
 @app.get("/", tags=["FRONT"])
 async def home(request: Request):
     return FileResponse('app/templates/index.html')
+
+
+@app.post("/api/rag", tags=["RAG"])
+async def rag(request: Request, payload: RagData):
+    print(payload)
+
+    return JSONResponse(content={'msg': 'performing rag'})
+
 
 if __name__ == "__main__":
     import uvicorn
