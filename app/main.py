@@ -1,9 +1,22 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
+from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 import config
 from .api.points import list_courses, list_threads, dump_thread
+from typing import Annotated
+
+
+class LoginData(BaseModel):
+    username: str = Field(max_length=16)
+    password: str = Field(max_length=16)
+
+
+class RagData(BaseModel):
+    course_id: str = Field(max_length=128)
+    prompt:    str = Field(max_length=512)
+
 
 # Create FastAPI app
 app = FastAPI(
@@ -11,7 +24,8 @@ app = FastAPI(
     description="MOOc description",
     version="0.1.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    redirect_slashes=False
 )
 
 # Mount static files from the templates folder
@@ -31,24 +45,42 @@ app.add_middleware(
 )
 
 
-@app.get("/courses", tags=["ACCESS DATA"])
+@app.get("/api/courses", tags=["ACCESS DATA"])
 async def course(request: Request):
     return JSONResponse(content=list_courses())
 
 
-@app.get("/courses/{course_id}", tags=["ACCESS DATA"])
+@app.get("/api/courses/{course_id}", tags=["ACCESS DATA"])
 async def threads(resquest: Request, course_id: str):
     return JSONResponse(content=list_threads(course_id=course_id))
 
 
-@app.get("/courses/{course_id}/threads/{thread_id}", tags=["ACCESS DATA"])
+@app.get("/api/courses/{course_id}/threads/{thread_id}", tags=["ACCESS DATA"])
 async def messages(request: Request, course_id: str, thread_id: str):
     return JSONResponse(content=dump_thread(thread_id=thread_id))
+
+
+@app.post("/api/login", tags=["LOGIN"])
+async def login(request: Request, form: LoginData):
+    return JSONResponse(content={'status': 'success', 'message': 'Login Sucessful'})
+
+
+@app.get("/api/logout", tags=["LOGOUT"])
+async def logout(request: Request):
+    return JSONResponse(content={'msg': "Logged out!"})
 
 
 @app.get("/", tags=["FRONT"])
 async def home(request: Request):
     return FileResponse('app/templates/index.html')
+
+
+@app.post("/api/rag", tags=["RAG"])
+async def rag(request: Request, payload: RagData):
+    print(payload)
+
+    return JSONResponse(content={'msg': 'performing rag'})
+
 
 if __name__ == "__main__":
     import uvicorn

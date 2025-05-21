@@ -6,9 +6,9 @@
             <label class="form-label fw-bold">Choisissez le cours concerné :</label>
             <select class="form-select" v-model="selectedCourse">
                 <option value=''></option>
-                <option 
-                  v-for="(course, index) in courses" 
-                  :key="index" 
+                <option
+                  v-for="(course, index) in courses"
+                  :key="index"
                   :value="course.course_id">
                     {{ course.course_id }}
                 </option>
@@ -20,9 +20,9 @@
             <label class="form-label fw-bold">Posez votre question :</label>
             <div>
                 <input type="text" class="form-control question-data" placeholder="">
-                
+
             </div>
-            
+
         </div>
         <button type="button" class="btn btn-dark valider" :onclick=ValiderQuestion >Valider</button>
         <!-- Liste des résultats -->
@@ -31,11 +31,7 @@
                 <h4 class="fw-bold">
                     Fils de discussions recommandés : <br>
                     <span class="discussion-question">"{{ question }}"</span>
-                    
                 </h4>
-                
-                
-                
             </div>
             <ResultatsFils :threads="filteredThreads" />
         </section>
@@ -67,23 +63,23 @@ export default {
     },
     methods: {
         getCourses(){
-            axios.get("http://127.0.0.1:5000/api/courses")
+            axios.get("/api/courses")
             .then( response =>{
                 this.courses = response.data;
                 // this.selectedCourse = this.courses[0].course_id || this.courses[0].id;
                 this.selectedCourse = "";
                 console.log(this.selectedCourse);
-                
+
             })
         },
         getThreads(){
-            axios.get("http://127.0.0.1:5000/api/threads/" + this.selectedCourse)
+            axios.get("/api/courses/" + this.selectedCourse)
             .then( response =>{
                 this.threads = response.data;
-                
+
             })
         },
-        
+
         ValiderQuestion(){
             console.log("Question validée");
             let questionData = document.querySelector(".question-data");
@@ -91,12 +87,23 @@ export default {
             this.question = questionData;
             console.log(this.question);
             this.getThreads();
+            console.log(this.selectedCourse)
+            let data  = {
+              course_id : this.selectedCourse,
+              prompt    : this.question
+            }
+            axios.post("/api/rag", data)
+            .then(response => {
+            console.log(response.data)
+            /* Call get threads */
+            })
+
         }
     },
     mounted() {
         this.getCourses();
         // this.threads = threads;
-        
+
     },
     computed: {
         filteredThreads() {
@@ -104,7 +111,7 @@ export default {
         }
 
 
-        
+
     }
 };
 </script>
@@ -181,5 +188,5 @@ section {
     font-size: 16px;
 }
 
-        
+
 </style>

@@ -33,7 +33,7 @@ export default defineConfig({
     proxy: {
       // Proxy all /api requests to your backend
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:7860',
         changeOrigin: true,
         // Uncomment if you need to remove /api from the path
         rewrite: (path) => path.replace(/^\/api/, '')
