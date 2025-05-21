@@ -8,3 +8,7 @@ sqlmodel
 psycopg2-binary
 pgvector
 sqlalchemy
+sentence-transformers 
+torch 
+torchvision 
+torchaudio
