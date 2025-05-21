@@ -1,5 +1,9 @@
 from sentence_transformers import SentenceTransformer
 
+model =  SentenceTransformer(
+        'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
+print("Modèle chargé : ", model)
+
 
 def get_text_embedding(input_text):
     """
@@ -11,13 +15,10 @@ def get_text_embedding(input_text):
     Returns:
         List[float]: L'embedding du texte
     """
-    model =  SentenceTransformer(
-        'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
-    print("Modèle chargé : ", model)
 
     embedded_text = model.encode(
-                    input_text, show_progress_bar=False)
-                
+                   input_text, show_progress_bar=False)
+    
     return embedded_text.tolist()
 
 if __name__ == "__main__":
