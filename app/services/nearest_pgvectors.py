@@ -5,20 +5,26 @@ from config import SCHEMA, DATABASE_URL, VECTOR_DIMENSION, NB_MESSAGES_PROPOSES
 from pgvector.sqlalchemy import Vector
 from app.services.text_embedding import get_text_embedding
 
-def get_neareast_threads(prompt, k=NB_MESSAGES_PROPOSES, courses=None):
+
+def get_neareast_threads(prompt, k=5, courses=None):
     """ 
     A Faire mais auparavant il me faut une BDD en bonne forme car je n'ai pas de course_id dans la base postgreSQL
-    
+
+    Args:
+        prompt: Le texte à comparer
+        k: Nombre de thread à proposer
+        courses: Liste des k thread_id
+    Returns:
+        List[thread_id]: Liste des thread_id les plus proches
     """
     
-
     global engine
 
+    # Embedding du prompt
     embedded_prompt = get_text_embedding(prompt)
+    
     with Session(engine) as session:
-        # Option 1: Utiliser text() avec les paramètres directement dans la requête
-        # Note: avec SQLModel.exec(), on ne peut pas passer de paramètres séparément comme avec execute()
-        
+       
         query = text(f"""
             SELECT *  
             FROM {SCHEMA}.message
@@ -26,21 +32,25 @@ def get_neareast_threads(prompt, k=NB_MESSAGES_PROPOSES, courses=None):
             ORDER by body_embedding <=> :embedding      
             LIMIT :limit  
         """)
-
+        
         embedded_prompt_str = '[' + ','.join([str(val) for val in embedded_prompt]) + ']'
+        nb_msg = k * 5
         
         result = session.exec(query, params={
             "embedding": embedded_prompt_str,
-            "limit": k,
+            "limit": nb_msg,
             "course_id": courses
         })
-        
-        # Reconstruction des objets Message à partir des résultats
-        list_threads_id = set()
-        for row in result:
-            list_threads_id.add(row.thread_id)
 
-    return list_threads_id
+        ensemble_thread_id = set()
+        for msg in result:
+            if msg.thread_id != '':
+                ensemble_thread_id.add(msg.thread_id)
+            else:
+                ensemble_thread_id.add(msg.id)
+        
+        list_thread_id = list(ensemble_thread_id)[:k]    
+    return list_thread_id
 
 
 def get_nearest_messages(prompt, k=NB_MESSAGES_PROPOSES):
@@ -89,9 +99,9 @@ def get_nearest_messages(prompt, k=NB_MESSAGES_PROPOSES):
 
 def main():
 
-    # Test de la fonction       
-    test_prompt = "ingénieur"
-    test_course_id = 'CNAM/01002/Trimestre_1_2014'
+    # Test des fonctions       
+    test_prompt = "ingénieur développeur"
+    test_course_id = 'course-v1:MinesTelecom+04024+session01'
     #list_msg = get_nearest_messages(test_prompt)
 
     #Affichage des ID et des corps des messages
@@ -100,9 +110,8 @@ def main():
     #    print(f"Body: {msg.body[:500]}...")  # Print first 500 chars
     #    print("-" * 80)
 
-    list_threads_id = get_neareast_threads(test_prompt, k=10, courses=test_course_id)
-    
-    print("Liste des threads ID : ", list_threads_id)
+    list_threads_id = get_neareast_threads(test_prompt, k=7, courses=test_course_id)
+    print(f"{list_threads_id}")
     # Test de la fonction
 
 if __name__ == "__main__":
