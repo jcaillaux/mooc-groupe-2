@@ -1,3 +1,9 @@
+<<<<<<< Updated upstream
+=======
+from pymongo import MongoClient
+from flask import Flask, jsonify
+from flask_cors import CORS
+>>>>>>> Stashed changes
 import json
 from pymongo import MongoClient
 
@@ -20,7 +26,11 @@ def list_messages(thread_id):
     }
     limit = 100
 
+<<<<<<< Updated upstream
     result = client['G2']['extracted_documents'].find(
+=======
+    result = client['mooc']['sample'].find(
+>>>>>>> Stashed changes
         filter=filter,
         limit=limit
     )
@@ -48,7 +58,11 @@ def api_login():
         return jsonify({'status': 'success', 'message': 'Login successful'})
     else:
         return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 401
+<<<<<<< Updated upstream
 """
+=======
+
+>>>>>>> Stashed changes
 
 if __name__ == '__main__':
     app.run(debug=True)
