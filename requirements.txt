@@ -7,6 +7,7 @@ sqlmodel
 psycopg2-binary
 pgvector
 sqlalchemy
+
 sentence-transformers
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch

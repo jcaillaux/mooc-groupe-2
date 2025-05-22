@@ -3,6 +3,7 @@ import TrouverReponse from '../views/TrouverReponseView.vue' // Importation de l
 import FilDeDiscussion from '../views/FilDeDiscussionView.vue'
 import LandingPageView from '../views/LandingPageView.vue'
 import ThredsClustsViews from '../views/ThredsClustsViews.vue'
+import SentimentView from '@/views/SentimentView.vue'
 import { useCounterStore } from '../stores/data.js' // Importation du store Pinia
 
 const routes = [
@@ -28,7 +29,14 @@ const routes = [
     path: '/landing-page',
     name: 'landing-page',
     component: LandingPageView
+  },
+  {
+    path: '/sentiment',
+    name: 'sentiment',
+    component: SentimentView,
+    meta: { requiresAuth: true }
   }
+  
 ]
 
 const router = createRouter({

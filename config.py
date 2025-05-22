@@ -31,5 +31,5 @@ NB_MESSAGES_PROPOSES = 5
 
 # FastAPI configuration
 HOST = "localhost"
-PORT = 8000
+PORT = 7860
 RELOAD = True
