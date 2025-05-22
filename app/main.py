@@ -80,7 +80,8 @@ async def home(request: Request):
 async def rag(request: Request, payload: RagData):
     # embd = get_text_embedding(input_text=payload.prompt)
     nearest_messages = get_nearest_messages(prompt=payload.prompt)
-    print(nearest_messages)
+    messages = [msg.body for msg in nearest_messages]
+    print(messages)
     return JSONResponse(content={'msg': 'performing rag'})
 
 

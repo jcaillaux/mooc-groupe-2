@@ -21,7 +21,7 @@ MONGO_URL = os.getenv("urlmongoDB")
 MONGO_DB_NAME = "G2"
 MONGO_COLLECTION_ORIGINAL = "forum_original"
 MONGO_COLLECTION_CLEANED = "extracted_content"
-#MONGO_COLLECTION_CLEANED = "documents"
+# MONGO_COLLECTION_CLEANED = "documents"
 
 # Pgvector
 VECTOR_DIMENSION = 384
