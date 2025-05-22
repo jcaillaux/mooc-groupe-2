@@ -57,7 +57,7 @@ def get_nearest_messages(prompt, k=NB_MESSAGES_PROPOSES):
     global engine
 
     embedded_prompt = get_text_embedding(prompt)
-
+    
     with Session(engine) as session:
         # Option 1: Utiliser text() avec les paramètres directement dans la requête
         # Note: avec SQLModel.exec(), on ne peut pas passer de paramètres séparément comme avec execute()
@@ -82,7 +82,8 @@ def get_nearest_messages(prompt, k=NB_MESSAGES_PROPOSES):
             msg = Message(
                 id=row.id,
                 body_embedding=row.body_embedding,
-                body=row.body
+                body=row.body,
+                thread_id=row.thread_id
             )
             messages.append(msg)
 

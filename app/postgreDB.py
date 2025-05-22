@@ -21,9 +21,12 @@ logger = logging.getLogger(__name__)
 
 logger.setLevel(logging.WARNING)
 
-# Création de l'engine de base de données
-engine = create_engine(DATABASE_URL, echo=False)
-
+try :
+    # Création de l'engine de base de données
+    engine = create_engine(DATABASE_URL, echo=False)
+except Exception :
+    engine = 0
+    print("No database available.")
 
 class Message(SQLModel, table=True):
     """Modèle représentant un message dans la base de données."""
@@ -209,9 +212,11 @@ def main():
     initialize_database(drop_existing=False)
     logger.info(f"Database initialized in schema: {SCHEMA}")
 
-# On initialise la base de donnees lors de l'importation du module
-initialize_database(drop_existing=False)
-
+try :
+    # On initialise la base de donnees lors de l'importation du module
+    initialize_database(drop_existing=False)
+except Exception:
+    print("No Database available")
 if __name__ == "__main__":
     # A exécuter une seule fois pour créer la base de données et les tables
     # Dans main() penser à mettre drop_existing=True si on veut supprimer les tables existantes
