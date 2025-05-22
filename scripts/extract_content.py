@@ -37,13 +37,6 @@ def extract_content(content):
         'endorsed' : content.get('endorsed', ""),
         'depth' : content.get('depth', "")
     }
-
-    # Sauvegarder le message si pas déjà présent
-   # if not collection_cleaned.find_one({'id': message['id']}):
-    #    collection_cleaned.insert_one(message)
-     #   print(f"Message inséré : ID {message['id']}")
-    #else:
-        #print(f"Message déjà présent : ID {message['id']}")
         
     collection_cleaned.insert_one(message)
     # Traitement récursif des enfants
