@@ -1,11 +1,13 @@
 <template>
     <BarreDeNavigation />
     <main>
+        <section class="formulaire">
         <!-- Select pour choisir cours -->
         <div class="mb-3 question-form2">
             <label class="form-label fw-bold">Choisissez le cours concerné :</label>
             <select class="form-select" v-model="selectedCourse">
                 <option value=''></option>
+                <option value='no course'>Aucun cours en particulier</option>
                 <option 
                   v-for="(course, index) in courses" 
                   :key="index" 
@@ -16,15 +18,17 @@
         </div>
 
         <!-- Input pour poser une question -->
-        <div class="mb-3 question-form" v-if="selectedCourse">
+        <div class="mb-3 question-form" style="width: 100%;" v-if="selectedCourse">
             <label class="form-label fw-bold">Posez votre question :</label>
-            <div>
-                <input type="text" class="form-control question-data" placeholder="">
+            <div style="width: 100%;">
+                <input type="text" style="width: 100%;" class="form-control question-data" placeholder="">
                 
             </div>
-            
+            <button type="button" class="btn btn-dark valider" :onclick=ValiderQuestion >Valider</button>
         </div>
-        <button type="button" class="btn btn-dark valider" :onclick=ValiderQuestion >Valider</button>
+        
+
+        </section>
         <!-- Liste des résultats -->
         <section v-if="question" class="section-resultats">
             <div class="">
@@ -120,11 +124,23 @@ main {
     color: rgb(21, 31, 101)!important;
 }
 
+section.formulaire {
+    border : solid 1px rgba(0, 0, 0, 0.306);
+    border-radius: 10px;
+    padding: 20px 100px;
+}
+
 .question-form,
 .question-form2 {
     width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+input.question-data {
+    width: 300px;
+}
 .question-form div {
     display: flex;
     gap: 10px;
@@ -132,13 +148,16 @@ main {
 .valider {
     margin-top: 20px;
     width: 200px;
+    
 }
 section {
     margin-top: 50px;
+
 }
 
 .section-resultats {
     width: 1000px;
+    
 }
 
 .discussion-header {

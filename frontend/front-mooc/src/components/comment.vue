@@ -1,4 +1,6 @@
 <template>
+  
+  <!-- Sinon, afficher les messages -->
   <div>
     <div class="comment" :class="{ reply: type === 'reply' }">
       <header>
@@ -8,13 +10,16 @@
       <div v-html="body" class="comment-body" />
       <p class="timestamp"></p>
     </div>
-    <div v-if="children.length" class="comment-replies">
+    <div v-if="children" class="comment-replies">
       <Comment
         v-for="reply in children"
         :key="reply.id"
         v-bind="reply"
         type="reply"
       />
+    </div>
+    <div v-else>
+      <p class="timestamp">Pas de réponses</p>
     </div>
   </div>
 </template>

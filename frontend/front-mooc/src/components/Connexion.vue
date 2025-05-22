@@ -34,7 +34,7 @@ export default{
             username: id,
             password: password
         }
-        axios.post('http://127.0.0.1:5000/api/login', data)
+        axios.post('/api/login', data)
         .then(response => {
             this.$router.push({ name: 'home' });
             console.log(response.data);
