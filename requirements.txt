@@ -3,12 +3,11 @@ fastapi
 uvicorn
 python-multipart
 pymongo
-
 sqlmodel
 psycopg2-binary
 pgvector
 sqlalchemy
-sentence-transformers 
-torch 
-torchvision 
-torchaudio
+
+sentence-transformers
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
