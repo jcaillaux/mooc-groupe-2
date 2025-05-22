@@ -5,7 +5,8 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 import config
 from .api.points import list_courses, list_threads, dump_thread
-from typing import Annotated
+from .services.text_embedding import get_text_embedding
+from .services.nearest_pgvectors import get_nearest_messages
 
 
 class LoginData(BaseModel):
@@ -77,8 +78,9 @@ async def home(request: Request):
 
 @app.post("/api/rag", tags=["RAG"])
 async def rag(request: Request, payload: RagData):
-    print(payload)
-
+    # embd = get_text_embedding(input_text=payload.prompt)
+    nearest_messages = get_nearest_messages(prompt=payload.prompt)
+    print(nearest_messages)
     return JSONResponse(content={'msg': 'performing rag'})
 
 
