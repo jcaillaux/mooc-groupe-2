@@ -100,7 +100,7 @@ def get_nearest_messages(prompt, k=NB_MESSAGES_PROPOSES):
 def main():
 
     # Test des fonctions       
-    test_prompt = "ingénieur développeur"
+    test_prompt = "thermopim"
     test_course_id = 'course-v1:MinesTelecom+04024+session01'
     #list_msg = get_nearest_messages(test_prompt)
 

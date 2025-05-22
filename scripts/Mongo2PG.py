@@ -34,9 +34,16 @@ def main():
     #print(all_msg[48986])
     #print(all_msg[178507])
     # Probleme de caractere :
-    #print(all_msg[55562]['id'])
-    
-    for index, item in enumerate(all_msg[55562:]):
+    #print(len(all_msg))
+    index = 153612
+    #print(f"msg {index -2}, id : {all_msg[index - 3]['id']}")
+    #print(f"msg {index -1}, id : {all_msg[index - 2]['id']}")
+    #print(f"msg {index}, id : {all_msg[index -1]['id']}")
+    #print(f"msg {index +1}, id : {all_msg[index]['id']}")
+    #print(f"msg {index +2}, id : {all_msg[index +1]['id']}")
+    #print(f"msg {len(all_msg)}, id : {all_msg[len(all_msg)-1]['id']}")
+    #return
+    for index, item in enumerate(all_msg[153612:]):
         mymessage = Message()
         mymessage.id = item.get('id')
         mymessage.created_at = item.get('created_at', None)
@@ -45,7 +52,7 @@ def main():
         mymessage.course_id = item.get('course_id', None)
         mymessage.body = item.get('body', None)
         mymessage.body_embedding = get_text_embedding(mymessage.body)
-        print(mymessage)
+        #print(mymessage)
         add_message(mymessage)
         os.system('clear')
         print(f"\r{index} : Message.id : {mymessage.id}", end="")   
