@@ -1,6 +1,6 @@
 <template>
     <iframe
-  src="/api/topics"
+  src="/api/users/all"
   width="100%"
   height="500px"
   style="border:none;"

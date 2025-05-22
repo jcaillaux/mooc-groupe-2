@@ -31,7 +31,7 @@ export default {
   methods: {
     getComments() {
       console.log(this.threadId);
-      apiClient.get('/api/threads/' + this.threadId)
+      apiClient.get('/api/analyzethreads/' + this.threadId)
         .then(response => {
           this.comments = response.data
           console.log(response.data)

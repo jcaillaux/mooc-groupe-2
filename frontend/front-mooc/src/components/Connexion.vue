@@ -16,7 +16,8 @@
 </template>
 <script>
 import { useCounterStore } from '../stores/data.js' // Importation du store Pinia
-import axios from 'axios';
+import { useAuthStore } from '@/stores/auth.js';
+//import axios from 'axios';
 
 export default{
   data(){
@@ -25,7 +26,7 @@ export default{
     }
   },
   methods:{
-    login(){
+    async login(){
         let id = document.getElementById("email").value;
         let password = document.getElementById("password").value;
         console.log(id);
@@ -34,7 +35,7 @@ export default{
             username: id,
             password: password
         }
-      axios.post('/api/login', data, {
+      /*axios.post('/api/login', data, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -48,13 +49,26 @@ export default{
         })
         .catch(error => {
             console.error('There was an error!', error);
-        });
+        });*/
+      const authStore = useAuthStore()
+      const success = await authStore.login(id, password)
+      if (success){
+        this.$router.push({ name: 'home' });
+      }
     }
   },
   computed: {
     is_connected(){
-      const store = useCounterStore();
-      return store.connected;
+      const authStore = useAuthStore()
+      return authStore.isAuthenticated
+    }
+  },
+  // Redirect if already logged in
+  beforeMount() {
+    if (this.is_connected) {
+      this.$router.push({ name: 'home' })
+    }else{
+       this.$router.push({ name: 'landing-page' })
     }
   }
 }

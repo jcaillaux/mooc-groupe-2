@@ -5,10 +5,11 @@
             <h1 class="navbar-title">Mooc</h1>
             <nav>
                 <ul>
-                        <li><router-link to="/">Accueil</router-link></li>
-                        <li><router-link to="/threads-clusts">Topics</router-link></li>
-                        <li><router-link to="/">Users</router-link></li>
+                        <li><router-link to="/">Questions/Réponses</router-link></li>
                         <li><router-link to="/sentiment">Analyse de sentiments</router-link></li>
+                        <li><router-link to="/threads-clusts">Topics</router-link></li>
+                        <li><router-link to="/users-clusts">Utilisateurs</router-link></li>
+                        
                     </ul>
                 <div class="deconnexion" >
                     
@@ -24,12 +25,17 @@
 
 <script>
 import { useCounterStore } from '../stores/data.js'
+import { useAuthStore } from '@/stores/auth.js';
 export default{
     methods:{
         deconnexion(){
             console.log("Vous êtes déconnecté");
+            /*
             const store = useCounterStore();
             store.connected = false;
+            */
+            const authStore = useAuthStore()
+            authStore.logout()
             this.$router.push({ name: 'landing-page' });
             console.log("Vous êtes déconnecté");
         }
@@ -65,6 +71,13 @@ header.navbar-header {
     color: #fff;
     /* Option: police monospace ou personnalisée pour le style tech */
     /* font-family: 'Fira Mono', 'Consolas', monospace; */
+}
+a {
+    color:#fff;
+    text-decoration: none;
+}
+a:hover{
+    color: antiquewhite;
 }
 .deconnexion {
     cursor: pointer;

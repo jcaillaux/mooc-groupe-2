@@ -1,6 +1,7 @@
 <template>
     <BarreDeNavigation />
     <main>
+        <h1>Analyse de Sentiments</h1>
         <!-- Select pour choisir cours -->
         <div class="mb-3 question-form2">
             <label class="form-label fw-bold">Choisissez le cours concerné :</label>
@@ -16,7 +17,7 @@
         </div>
         <!-- Liste des résultats -->
         <section v-if="selectedCourse" class="section-resultats">
-            <ResultatsFils :threads="filteredThreads" />
+            <SentimentResultatsFils :threads="filteredThreads" />
         </section>
     </main>
 </template>
@@ -24,65 +25,47 @@
 
 <script >
 
+import apiClient from "@/api/axios";
 import BarreDeNavigation from "../components/BarreDeNavigation.vue";
-import ResultatsFils from "../components/ResultatsFils.vue";
+import SentimentResultatsFils from "../components/SentimentResultatsFils.vue";
 
-import axios from "axios";
+
+//import axios from "axios";
 // import courses from "../data/courses.json";
 // import threads from "../data/threads.json";
 
 export default {
     components: {
         BarreDeNavigation,
-        ResultatsFils
+        SentimentResultatsFils
     },
     data() {
         return {
             courses: [],
-            threads: {},
-            //selectedCourse: null,
+            threads: [],
+            selectedCourse: null,
             question: "",
         };
     },
     methods: {
         getCourses(){
-            axios.get("/api/courses")
+            apiClient.get("/api/courses")
             .then( response =>{
                 this.courses = response.data;
                 // this.selectedCourse = this.courses[0].course_id || this.courses[0].id;
                 this.selectedCourse = "";
                 console.log(this.selectedCourse);
-
             })
         },
         getThreads(course_id){
-            console.log(encodeURIComponent(course_id))
-            axios.get("/api/courses/" + course_id)
+            let id = encodeURIComponent(course_id)
+            console.log(id)
+            apiClient.get("/api/courses/" + id)
             .then( response =>{
                 this.threads = response.data;
 
             })
         },
-
-        ValiderQuestion(){
-            console.log("Question validée");
-            let questionData = document.querySelector(".question-data");
-            questionData = questionData.value;
-            this.question = questionData;
-            console.log(this.question);
-            this.getThreads();
-            console.log(this.selectedCourse)
-            let data  = {
-              course_id : this.selectedCourse,
-              prompt    : this.question
-            }
-            axios.post("/api/rag", data)
-            .then(response => {
-            console.log(response.data)
-            /* Call get threads */
-            })
-
-        }
     },
     mounted() {
         this.getCourses();
@@ -97,7 +80,7 @@ export default {
     watch: {
         selectedCourse(newCourse, oldCourse){
             if (newCourse){
-                this.getThreads()
+                this.getThreads(newCourse)
             }
         }
     }
