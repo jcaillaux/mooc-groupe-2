@@ -30,33 +30,8 @@ def main():
 
     all_msg = read_msg(MONGO_COLLECTION_CLEANED)
     all_msg = list(all_msg)
-    #print(all_msg[48984:48987]) 
-    #print(all_msg[48986])
-    #print(all_msg[178507])
-    # Probleme de caractere :
-    #print(len(all_msg))
-    index = 153612
-    #print(f"msg {index -2}, id : {all_msg[index - 3]['id']}")
-    #print(f"msg {index -1}, id : {all_msg[index - 2]['id']}")
-    #print(f"msg {index}, id : {all_msg[index -1]['id']}")
-    #print(f"msg {index +1}, id : {all_msg[index]['id']}")
-    #print(f"msg {index +2}, id : {all_msg[index +1]['id']}")
-    #print(f"msg {len(all_msg)}, id : {all_msg[len(all_msg)-1]['id']}")
-    #return
-    for index, item in enumerate(all_msg[153612:]):
-        mymessage = Message()
-        mymessage.id = item.get('id')
-        mymessage.created_at = item.get('created_at', None)
-        mymessage.parent_id = item.get('parent_id', None)
-        mymessage.thread_id = item.get('thread_id', None)
-        mymessage.course_id = item.get('course_id', None)
-        mymessage.body = item.get('body', None)
-        mymessage.body_embedding = get_text_embedding(mymessage.body)
-        #print(mymessage)
-        add_message(mymessage)
-        os.system('clear')
-        print(f"\r{index} : Message.id : {mymessage.id}", end="")   
-    return
+
+    
     nb_msg_total = len(all_msg)
     print(f"Nombre total de messages : {nb_msg_total}")
     cpt_total = 0
