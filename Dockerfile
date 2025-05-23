@@ -19,7 +19,7 @@ FROM python:3.12-slim AS backend-build
 
 WORKDIR /app
 COPY requirements.txt .
-COPY .env .
+#COPY .env .
 COPY config.py .
 RUN pip install --no-cache-dir --upgrade pip
 
@@ -28,12 +28,6 @@ RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Stage 3: Final image
-#FROM python:3.12-slim
-
-#WORKDIR /app
-
-# Copy Python dependencies from backend-build
-#COPY --from=backend-build /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
 
 # Copy built frontend files from frontend-build
 COPY --from=frontend-build /app/frontend/dist /app/app/templates  
