@@ -19,7 +19,7 @@ FROM python:3.12-slim AS backend-build
 
 WORKDIR /app
 COPY requirements.txt .
-COPY .env .
+#COPY .env .
 COPY config.py .
 RUN pip install --no-cache-dir --upgrade pip
 
