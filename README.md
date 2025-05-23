@@ -2,7 +2,7 @@
 
 ## Prérequis 
 
-### Configuration de l'environement
+### Configuration de l'environnement
 
 ```bash
 # Cloner le projet
@@ -33,14 +33,21 @@ L'application sera accessible à partir d'un navigateur web.
 
 ```bash
 .
+├── .env.template
 ├── analyse/
 ├── app/
 ├── data/
 ├── docs/
 ├── frontend/
+├── scripts/
+├── tests/
+├── config.py
 ├── README.md
-└── scripts/
+└── requirements.txt
 ```
 
+### Structure du fichier .env
 
+Le fichier .env.template est à modifier avec ses propres paramètres.
+Ensuite, il faut le renommer en .env 
 
