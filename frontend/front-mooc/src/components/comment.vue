@@ -3,14 +3,14 @@
     <div class="comment" :class="{ reply: type === 'reply' }">
       <header>
         <h3>{{ username }}</h3> <!-- changé de author à username -->
-       
+        <p v-if="lang">Langue : {{ lang }} | Sentiment : {{ sent }}</p>
       </header>
       <div v-html="body" class="comment-body" />
       <p class="timestamp"></p>
     </div>
-    <div v-if="children.length" class="comment-replies">
+    <div v-if="responses" class="comment-replies">
       <Comment
-        v-for="reply in children"
+        v-for="reply in responses"
         :key="reply.id"
         v-bind="reply"
         type="reply"
@@ -25,8 +25,9 @@ export default {
   props: {
     username: { type: String, required: true },
     body: { type: String, required: true },
-    children: { type: Array, required: true },
-    
+    responses: { type: Array, required: false },
+    lang : {type : String, required:false},
+    sent : {type : String, required : false},
     type: { type: String, required: false, default: 'comment' },
   }
 };

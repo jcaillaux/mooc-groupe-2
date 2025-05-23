@@ -1,6 +1,5 @@
 <template>
     <BarreDeNavigation/>
-    
     <TopicsClusts/>
     
 </template>
@@ -15,3 +14,11 @@ export default{
     },
 }
 </script>
+<style scoped>
+h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgb(21, 31, 101)!important;
+}
+</style>

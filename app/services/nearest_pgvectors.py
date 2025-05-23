@@ -78,11 +78,13 @@ def get_nearest_messages(prompt, k=NB_MESSAGES_PROPOSES):
 
         # Reconstruction des objets Message à partir des résultats
         messages = []
+        
         for row in result:
             msg = Message(
                 id=row.id,
                 body_embedding=row.body_embedding,
-                body=row.body
+                body=row.body,
+                thread_id=row.thread_id
             )
             messages.append(msg)
 

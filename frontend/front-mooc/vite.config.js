@@ -36,7 +36,7 @@ export default defineConfig({
         target: 'http://localhost:7860',
         changeOrigin: true,
         // Uncomment if you need to remove /api from the path
-        rewrite: (path) => path.replace(/^\/api/, '')
+        //rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   },

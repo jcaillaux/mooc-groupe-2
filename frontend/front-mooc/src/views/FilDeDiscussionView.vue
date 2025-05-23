@@ -1,9 +1,10 @@
 <template>
   <BarreDeNavigation />
   <main>
-    <h1>Comments</h1>
-    <div class="comments">
-      <Comment v-for="(comment, index) in comments" :key="index" v-bind="comment.content" />
+    <h1>Fil</h1>
+    <div class="comments" v-if="comments">
+      <h4>{{ comments?.course_id }} / {{ comments?.title }}</h4>
+      <Comment v-bind="comments" :key="index" />
     </div>
   </main>
 </template>
@@ -11,7 +12,8 @@
 <script>
 import BarreDeNavigation from '../components/BarreDeNavigation.vue'
 import Comment from '../components/comment.vue'
-import axios from 'axios'
+//import axios from 'axios'
+import apiClient from '@/api/axios'
 
 export default {
   name: 'App',
@@ -22,14 +24,17 @@ export default {
   data() {
     return {
       threadId: null,
-      comments: [],
+      comments: null,
+      index : 0,
     }
   },
   methods: {
     getComments() {
-      axios.get('http://127.0.0.1:5000/api/thread/' + this.threadId)
+      console.log(this.threadId);
+      apiClient.get('/api/threads/' + this.threadId)
         .then(response => {
           this.comments = response.data
+          console.log(response.data)
         })
     },
   },

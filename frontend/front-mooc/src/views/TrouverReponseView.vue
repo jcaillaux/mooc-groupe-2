@@ -2,6 +2,7 @@
     <BarreDeNavigation />
     <main>
         <!-- Select pour choisir cours -->
+        <h2>Question/Réponse</h2>
         <div class="mb-3 question-form2">
             <label class="form-label fw-bold">Choisissez le cours concerné :</label>
             <select class="form-select" v-model="selectedCourse">
@@ -41,10 +42,11 @@
 
 <script >
 
+import apiClient from "@/api/axios";
 import BarreDeNavigation from "../components/BarreDeNavigation.vue";
 import ResultatsFils from "../components/ResultatsFils.vue";
 
-import axios from "axios";
+//import axios from "axios";
 // import courses from "../data/courses.json";
 // import threads from "../data/threads.json";
 
@@ -63,7 +65,8 @@ export default {
     },
     methods: {
         getCourses(){
-            axios.get("/api/courses")
+            console.log('Not', localStorage.getItem('token'))
+            apiClient.get("/api/courses")
             .then( response =>{
                 this.courses = response.data;
                 // this.selectedCourse = this.courses[0].course_id || this.courses[0].id;
@@ -73,7 +76,7 @@ export default {
             })
         },
         getThreads(){
-            axios.get("/api/courses/" + this.selectedCourse)
+            apiClient.get("/api/courses/" + this.selectedCourse)
             .then( response =>{
                 this.threads = response.data;
 
@@ -92,10 +95,10 @@ export default {
               course_id : this.selectedCourse,
               prompt    : this.question
             }
-            axios.post("/api/rag", data)
+            apiClient.post("/api/rag", data)
             .then(response => {
             console.log(response.data)
-            /* Call get threads */
+            this.threads = response.data
             })
 
         }
