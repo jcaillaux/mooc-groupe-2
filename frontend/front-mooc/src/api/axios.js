@@ -3,7 +3,7 @@ import axios from 'axios'
 // Create a custom axios instance
 const apiClient = axios.create({
   baseURL: '', // Your API base URL
-  timeout: 10000,
+  timeout: 60000,
 })
 
 // Function to set auth token

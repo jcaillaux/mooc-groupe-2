@@ -65,6 +65,15 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
+def check_token(token:str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if not username:
+            raise HTTPException(status_code=401, detail="Invalid token")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
 # Create FastAPI app
 app = FastAPI(
     title="MOOC-Group-2",
@@ -141,7 +150,9 @@ async def messages(request: Request, thread_id: str, current_user: str = Depends
 async def rag(request: Request, payload: RagData, current_user: str = Depends(get_current_user)):
     """ Perform a query search among a given course using a rag base approach """
     nearest_messages = get_nearest_messages(prompt=payload.prompt)
+    
     messages = [{'thread_title' : msg.body, 'thread_id' : msg.thread_id if msg.thread_id else msg.id} for msg in nearest_messages]
+    
     return JSONResponse(content=messages)
 
 @app.get("/api/analyzethreads/{thread_id}", tags=["ANALYSIS"])
@@ -150,13 +161,15 @@ async def messages(request: Request, thread_id: str, current_user: str = Depends
     return JSONResponse(content=analyze_thread(thread_id=thread_id))
 
 @app.get("/api/topics", tags=["ANALYSIS"])
-async def topics(request:Request, current_user: str = Depends(get_current_user)):
+async def topics(request:Request, token:str):
     """ Fetch the topic modelling analysis of all the forum data """
+    check_token(token)
     return FileResponse("app/plots/threads_topics.html")
 
 @app.get("/api/users/{course_id:path}", tags=["ANALYSIS"])
-async def users(request:Request, course_id:str, current_user: str = Depends(get_current_user)):
+async def users(request:Request, course_id:str,token:str):
     """ Fetch user clustering for a specific course or over all avaliable courses """
+    check_token(token)
     if course_id == "all":
         return FileResponse("app/plots/clusters_kmeans_interactif.html")
     else :

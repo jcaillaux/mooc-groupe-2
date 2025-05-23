@@ -1,6 +1,6 @@
 import json
 from pymongo import MongoClient
-from config import MONGO_URL
+from config import MONGO_URL, MONGO_COLLECTION_ORIGINAL, MONGO_DB_NAME
 from .utils import clean_mooc_thread
 
 
@@ -8,7 +8,7 @@ def list_courses():
     #with open('data/courses.json', 'r') as f:
     #    return json.load(f)
     client = MongoClient(MONGO_URL)
-    results = client['mooc']['sample'].aggregate([
+    results = client[MONGO_DB_NAME][MONGO_COLLECTION_ORIGINAL].aggregate([
         {
             '$group': {
                 '_id': '$content.course_id',
@@ -33,9 +33,10 @@ def list_threads(course_id):
     #    threads = json.load(f)
     #    return threads.get(course_id, [])
     client = MongoClient(MONGO_URL)
-    results = client['mooc']['sample'].find(
+    print("Performing REquest")
+    results = client[MONGO_DB_NAME][MONGO_COLLECTION_ORIGINAL].find(
             {"content.course_id": course_id}, {"content.title": 1, "content.id": 1})
-
+    print('Doing Request')
     thread_list = []
     for result in results:
         thread_list.append({
@@ -62,11 +63,11 @@ def list_messages(thread_id):
 def dump_thread(thread_id):
     client = MongoClient(MONGO_URL)
     filter = {'_id' : thread_id}
-    result = client['G2']['forum_original'].find_one(filter = filter)
+    result = client[MONGO_DB_NAME][MONGO_COLLECTION_ORIGINAL].find_one(filter = filter)
     return clean_mooc_thread(result, analyse=False)
 
 def analyze_thread(thread_id):
     client = MongoClient(MONGO_URL)
     filter = {'_id' : thread_id}
-    result = client['G2']['forum_original'].find_one(filter = filter)
+    result = client[MONGO_DB_NAME][MONGO_COLLECTION_ORIGINAL].find_one(filter = filter)
     return clean_mooc_thread(result, analyse=True)
