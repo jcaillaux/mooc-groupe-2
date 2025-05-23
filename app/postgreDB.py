@@ -12,14 +12,21 @@ from pydantic import ConfigDict
 
 from config import SCHEMA, DATABASE_URL, VECTOR_DIMENSION
 
+
+
 # Configuration du logger
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#logging.basicConfig(level=logging.INFO,
+#                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-# Création de l'engine de base de données
-engine = create_engine(DATABASE_URL, echo=False)
+logger.setLevel(logging.WARNING)
 
+try :
+    # Création de l'engine de base de données
+    engine = create_engine(DATABASE_URL, echo=False)
+except Exception :
+    engine = 0
+    print("No database available.")
 
 class Message(SQLModel, table=True):
     """Modèle représentant un message dans la base de données."""
@@ -34,7 +41,7 @@ class Message(SQLModel, table=True):
     created_at: Optional[str] = Field(default=None)
     parent_id: Optional[str] = Field(default=None)
     thread_id: Optional[str] = Field(default=None)
-    courseware_title: Optional[str] = Field(default=None)
+    course_id: Optional[str] = Field(default=None)
     body_embedding: Optional[Any] = Field(sa_type=Vector(VECTOR_DIMENSION))
 
 
@@ -51,7 +58,7 @@ def setup_pgvector():
 def create_schema():
     """Crée le schéma s'il n'existe pas."""
     with Session(engine) as session:
-        session.execute(text(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA}"))
+        session.exec(text(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA}"))
         session.commit()
         logger.info(f"Schéma {SCHEMA} vérifié/créé")
 
@@ -205,7 +212,11 @@ def main():
     initialize_database(drop_existing=False)
     logger.info(f"Database initialized in schema: {SCHEMA}")
 
-
+try :
+    # On initialise la base de donnees lors de l'importation du module
+    initialize_database(drop_existing=False)
+except Exception:
+    print("No Database available")
 if __name__ == "__main__":
     # A exécuter une seule fois pour créer la base de données et les tables
     # Dans main() penser à mettre drop_existing=True si on veut supprimer les tables existantes

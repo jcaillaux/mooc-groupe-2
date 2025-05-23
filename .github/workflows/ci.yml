@@ -16,8 +16,15 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run basic test
+        env: 
+          URL : ${{ secrets.AZ_POSTGRES }}
+          MONGO : ${{ secrets.AZ_MONGO }}
         run: |
-          echo "Running tests" && exit 0
+          echo "Building the .env file"
+          echo "url=$URL" >> .env
+          echo "mongo=$MONGO" >> .env
+
+          echo "Running tests" 
           pip install -r requirements.txt
           pip install pytest
           
