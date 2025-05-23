@@ -28,7 +28,7 @@ ENV TRANSFORMERS_CACHE=/.cache/huggingface/transformers
 ENV TORCH_HOME=/.cache/torch
 ENV SENTENCE_TRANSFORMERS_HOME=/.cache/sentence_transformers
 COPY requirements.txt .
-#COPY .env .
+#  COPY .env .
 COPY config.py .
 RUN pip install --no-cache-dir --upgrade pip
 
