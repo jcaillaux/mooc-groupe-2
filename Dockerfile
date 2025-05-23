@@ -18,6 +18,15 @@ RUN npm run build
 FROM python:3.12-slim AS backend-build
 
 WORKDIR /app
+RUN mkdir -p /.cache/huggingface /.cache/torch /.cache/sentence_transformers && \
+    chmod -R 777 /.cache
+
+# Set all HF-related environment variables
+ENV HF_HOME=/.cache/huggingface
+ENV HF_DATASETS_CACHE=/.cache/huggingface/datasets
+ENV TRANSFORMERS_CACHE=/.cache/huggingface/transformers
+ENV TORCH_HOME=/.cache/torch
+ENV SENTENCE_TRANSFORMERS_HOME=/.cache/sentence_transformers
 COPY requirements.txt .
 #COPY .env .
 COPY config.py .
